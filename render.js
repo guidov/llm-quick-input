@@ -34,6 +34,12 @@ function setupTheme() {
 // Initialize theme when DOM is loaded
 document.addEventListener('DOMContentLoaded', setupTheme);
 
+// Expose toggle function to main process with proper context
+contextBridge.exposeInMainWorld('electronAPI', {
+    ...window.electronAPI,
+    toggleDarkMode: toggleTheme
+});
+
 // Cleanup function
 function cleanup() {
     sendButton.removeEventListener('click', handleSend);
