@@ -89,14 +89,28 @@ ipcMain.handle('send-to-llm', async (event, userText) => {
     try {
         console.log(`Sending to LLM: "${userText}"`);
         const completion = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo", // Or your preferred model like "gpt-4"
+            model: "gpt-3.5-turbo",
             messages: [{ role: "user", content: userText }],
-            max_tokens: 250, // Adjust as needed
+            max_tokens: 250,
         });
-        console.log("LLM Response:", completion.choices[0].message.content);
-        return { response: completion.choices[0].message.content };
+
+        if (!completion.choices?.[0]?.message?.content) {
+            console.error("Invalid response format from OpenAI:", completion);
+            return { error: "Received invalid response format from OpenAI" };
+        }
+
+        const response = completion.choices[0].message.content;
+        console.log("LLM Response:", response);
+        return { response };
     } catch (error) {
         console.error("ipcMain: Error calling OpenAI API:", error);
+        
+        // Handle network errors
+        if (error.message.includes('Unexpected token')) {
+            return { error: "Network error - received malformed response" };
+        }
+        
+        // Handle OpenAI API errors
         if (error instanceof OpenAI.APIError) {
             console.error("OpenAI API Error Details:", {
                 status: error.status,
@@ -104,9 +118,11 @@ ipcMain.handle('send-to-llm', async (event, userText) => {
                 code: error.code,
                 type: error.type,
             });
-            return { error: `OpenAI API Error (${error.status}): ${error.message}` };
+            return { error: `OpenAI Error: ${error.message}` };
         }
-        return { error: `API Error: ${error.message}` };
+        
+        // Handle other errors
+        return { error: `Error: ${error.message}` };
     }
 });
 

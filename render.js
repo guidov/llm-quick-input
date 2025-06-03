@@ -29,9 +29,13 @@ async function handleSend() {
         const result = await window.electronAPI.sendToLLM(text);
         console.log("Result from main process:", result);
         if (result.error) {
-            responseArea.textContent = `Error: ${result.error}`;
+            let errorMsg = result.error;
+            if (errorMsg.includes('Network error') || errorMsg.includes('Unexpected token')) {
+                errorMsg = "Network error - please check your connection";
+            }
+            responseArea.textContent = errorMsg;
             responseArea.className = 'error-response';
-            statusMessage.textContent = "Error occurred.";
+            statusMessage.textContent = "Error occurred";
             statusMessage.className = 'error';
         } else {
             responseArea.textContent = result.response;
