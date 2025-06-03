@@ -1,0 +1,21 @@
+<!-- llm-quick-input/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>LLM Quick Input</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <textarea id="input-box" placeholder="Talk to LLM... (Ctrl+Enter to send, Esc to close)" autofocus></textarea>
+        <button id="send-button">Send</button>
+        <div id="response-area">
+            <p id="status-message"></p>
+            <div id="llm-response"></div>
+        </div>
+    </div>
+    <script src="renderer.js"></script>
+</body>
+</html>
+
