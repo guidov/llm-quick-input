@@ -1,0 +1,95 @@
+// llm-quick-input/main.js
+const { app, BrowserWindow, ipcMain } = require('electron');
+const path = require('path');
+require('dotenv').config(); // Load .env variables
+
+const { OpenAI } = require('openai');
+
+if (!process.env.OPENAI_API_KEY) {
+    console.error("ERROR: OPENAI_API_KEY is not set in your .env file.");
+    app.quit();
+    process.exit(1);
+}
+
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+
+let mainWindow;
+
+function createWindow() {
+    mainWindow = new BrowserWindow({
+        width: 600,
+        height: 400, // Increased height to see responses
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js'),
+            contextIsolation: true,
+            nodeIntegration: false,
+        },
+        frame: true, // Set to false for a frameless window if desired
+        // alwaysOnTop: true, // Optional: make it stay on top
+        // skipTaskbar: true, // Optional: don't show in taskbar (if launched by shortcut)
+    });
+
+    mainWindow.loadFile('index.html');
+
+    // mainWindow.webContents.openDevTools(); // Uncomment for debugging
+
+    mainWindow.on('blur', () => {
+        // Optional: close the window when it loses focus
+        // if (mainWindow && !mainWindow.isDestroyed()) {
+        //     mainWindow.close();
+        // }
+    });
+
+    mainWindow.on('closed', () => {
+        mainWindow = null;
+    });
+}
+
+app.whenReady().then(() => {
+    createWindow();
+
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow();
+        }
+    });
+});
+
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        // On macOS, apps stay active until Cmd+Q
+        // app.quit(); // Comment this out if you want it to only close via shortcut
+    }
+});
+
+// IPC Handler for LLM requests
+ipcMain.handle('send-to-llm', async (event, userText) => {
+    if (!userText || userText.trim() === "") {
+        return { error: "Input text cannot be empty." };
+    }
+    try {
+        console.log(`Sending to LLM: "${userText}"`);
+        const completion = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo", // Or your preferred model like "gpt-4"
+            messages: [{ role: "user", content: userText }],
+            max_tokens: 250, // Adjust as needed
+        });
+        console.log("LLM Response:", completion.choices[0].message.content);
+        return { response: completion.choices[0].message.content };
+    } catch (error) {
+        console.error("Error calling OpenAI API:", error.message);
+        return { error: `API Error: ${error.message}` };
+    }
+});
+
+// IPC Handler to close the app (e.g., on Escape key)
+ipcMain.on('close-app', () => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.close();
+    }
+    // If you want the whole app to quit:
+    // app.quit();
+});
+
