@@ -13,7 +13,7 @@
     "linux": {
       "target": ["AppImage", "deb"],
       "category": "Utility",
-      "maintainer": "Your Name <your.email@example.com>"
+      "maintainer": "Guido Vettoretti <2guido@gmail.com>"
     }
   },
   "repository": {
@@ -21,9 +21,9 @@
     "url": "https://github.com/yourusername/llm-quick-input.git"
   },
   "keywords": [],
-  "author": "Your Name <your.email@example.com>",
+  "author": "Guido Vettoretti <2guido@gmail.com>",
   "license": "ISC",
-  "homepage": "https://github.com/yourusername/llm-quick-input",
+  "homepage": "https://github.com/guidov/llm-quick-input",
   "description": "A lightweight Electron app for quick LLM queries",
   "dependencies": {
     "dotenv": "^16.5.0",
