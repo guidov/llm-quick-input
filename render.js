@@ -5,40 +5,13 @@ const responseArea = document.getElementById('response-area-content');
 const statusMessage = document.getElementById('status-message');
 const darkModeToggle = document.getElementById('dark-mode-toggle');
 
-// Theme management
+// Force dark mode
 function setupTheme() {
-    // Check for saved theme preference or use preferred color scheme
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    let darkMode = localStorage.getItem('darkMode') === 'true' || 
-                  (localStorage.getItem('darkMode') === null && prefersDark);
-
-    // Apply the theme
-    function applyTheme() {
-        document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
-        localStorage.setItem('darkMode', darkMode);
-        darkModeToggle.textContent = darkMode ? '🌞' : '🌙';
-    }
-
-    function toggleTheme() {
-        darkMode = !darkMode;
-        applyTheme();
-    }
-    
-    // Toggle theme
-    darkModeToggle.addEventListener('click', toggleTheme);
-
-    // Initialize theme
-    applyTheme();
+    document.documentElement.setAttribute('data-theme', 'dark');
 }
 
 // Initialize theme when DOM is loaded
 document.addEventListener('DOMContentLoaded', setupTheme);
-
-// Expose toggle function to main process with proper context
-contextBridge.exposeInMainWorld('electronAPI', {
-    ...window.electronAPI,
-    toggleDarkMode: toggleTheme
-});
 
 // Cleanup function
 function cleanup() {

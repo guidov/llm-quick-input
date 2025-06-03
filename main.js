@@ -67,14 +67,6 @@ app.whenReady().then(() => {
                     }
                 },
                 { type: 'separator' },
-                {
-                    label: 'Toggle Dark Mode',
-                    accelerator: 'CmdOrCtrl+D',
-                    click: () => {
-                        mainWindow.webContents.executeJavaScript('window.electronAPI.toggleDarkMode()');
-                    }
-                },
-                { type: 'separator' },
                 { 
                     label: 'Quit', 
                     accelerator: 'CmdOrCtrl+Q',
