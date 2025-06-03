@@ -1,5 +1,5 @@
 // llm-quick-input/main.js
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, protocol } = require('electron');
 const path = require('path');
 require('dotenv').config(); // Load .env variables
 
@@ -33,7 +33,14 @@ function createWindow() {
         // skipTaskbar: true, // Optional: don't show in taskbar (if launched by shortcut)
     });
 
-    mainWindow.loadFile('index.html');
+    // Register custom protocol
+    protocol.registerFileProtocol('app', (request, callback) => {
+      const url = request.url.substr(6); // Remove 'app://'
+      callback({ path: path.join(__dirname, url) });
+    });
+    
+    // Load via custom protocol
+    mainWindow.loadURL('app://index.html');
 
     mainWindow.webContents.openDevTools(); // Debugging enabled
 
@@ -68,6 +75,11 @@ app.on('window-all-closed', () => {
 
 // IPC Handler for LLM requests
 ipcMain.handle('send-to-llm', async (event, userText) => {
+    // Validate sender
+    if (event.senderFrame.url !== 'app://index.html') {
+        console.warn('Blocked IPC request from untrusted source:', event.senderFrame.url);
+        return { error: 'Unauthorized request' };
+    }
     console.log("ipcMain: 'send-to-llm' received with text:", userText);
 
     if (!userText || userText.trim() === "") {
