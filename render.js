@@ -3,6 +3,27 @@ const inputBox = document.getElementById('input-box');
 const sendButton = document.getElementById('send-button');
 const responseArea = document.getElementById('llm-response');
 const statusMessage = document.getElementById('status-message');
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+
+// Check for saved theme preference or use preferred color scheme
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+let darkMode = localStorage.getItem('darkMode') === 'true' || 
+               (localStorage.getItem('darkMode') === null && prefersDark);
+
+// Apply the theme
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+  localStorage.setItem('darkMode', darkMode);
+}
+
+// Initialize theme
+applyTheme();
+
+// Toggle theme
+darkModeToggle.addEventListener('click', () => {
+  darkMode = !darkMode;
+  applyTheme();
+});
 
 console.log("renderer.js loaded");
 console.log("window.electronAPI:", window.electronAPI); // Check if API is exposed
