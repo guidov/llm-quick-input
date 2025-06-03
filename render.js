@@ -19,11 +19,13 @@ function setupTheme() {
         darkModeToggle.textContent = darkMode ? '🌞' : '🌙';
     }
 
-    // Toggle theme
-    darkModeToggle.addEventListener('click', () => {
+    function toggleTheme() {
         darkMode = !darkMode;
         applyTheme();
-    });
+    }
+    
+    // Toggle theme
+    darkModeToggle.addEventListener('click', toggleTheme);
 
     // Initialize theme
     applyTheme();
@@ -31,6 +33,16 @@ function setupTheme() {
 
 // Initialize theme when DOM is loaded
 document.addEventListener('DOMContentLoaded', setupTheme);
+
+// Cleanup function
+function cleanup() {
+    sendButton.removeEventListener('click', handleSend);
+    inputBox.removeEventListener('keydown', handleKeyDown);
+    darkModeToggle.removeEventListener('click', toggleTheme);
+}
+
+// Handle window closing
+window.addEventListener('beforeunload', cleanup);
 
 console.log("renderer.js loaded");
 console.log("window.electronAPI:", window.electronAPI); // Check if API is exposed
@@ -87,7 +99,7 @@ async function handleSend() {
 
 sendButton.addEventListener('click', handleSend);
 
-inputBox.addEventListener('keydown', (event) => {
+function handleKeyDown(event) {
     if (event.key === 'Enter' && event.ctrlKey) { // Ctrl+Enter to send
         event.preventDefault(); // Prevent newline in textarea
         handleSend();
@@ -95,5 +107,7 @@ inputBox.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') { // Escape to close
         window.electronAPI.closeApp();
     }
-});
+}
+
+inputBox.addEventListener('keydown', handleKeyDown);
 
