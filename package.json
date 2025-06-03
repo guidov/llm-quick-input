@@ -12,13 +12,19 @@
     "productName": "LLMQuickInput",
     "linux": {
       "target": ["AppImage", "deb"],
-      "category": "Utility"
+      "category": "Utility",
+      "maintainer": "Your Name <your.email@example.com>"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/llm-quick-input.git"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Your Name <your.email@example.com>",
   "license": "ISC",
-  "description": "",
+  "homepage": "https://github.com/yourusername/llm-quick-input",
+  "description": "A lightweight Electron app for quick LLM queries",
   "dependencies": {
     "dotenv": "^16.5.0",
     "openai": "^5.0.2"
@@ -26,6 +32,5 @@
   "devDependencies": {
     "electron": "^36.3.2",
     "electron-builder": "^26.0.12"
-  },
-  "description": "A lightweight Electron app for quick LLM queries"
+  }
 }
