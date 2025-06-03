@@ -4,9 +4,13 @@ const sendButton = document.getElementById('send-button');
 const responseArea = document.getElementById('llm-response');
 const statusMessage = document.getElementById('status-message');
 
+console.log("renderer.js loaded");
+console.log("window.electronAPI:", window.electronAPI); // Check if API is exposed
+
 inputBox.focus(); // Ensure input box is focused on launch
 
 async function handleSend() {
+    console.log("handleSend called");
     const text = inputBox.value.trim();
     if (!text) {
         statusMessage.textContent = "Please enter some text.";
@@ -21,7 +25,9 @@ async function handleSend() {
     sendButton.disabled = true;
 
     try {
+        console.log("Calling window.electronAPI.sendToLLM with:", text);
         const result = await window.electronAPI.sendToLLM(text);
+        console.log("Result from main process:", result);
         if (result.error) {
             responseArea.textContent = `Error: ${result.error}`;
             responseArea.className = 'error-response';

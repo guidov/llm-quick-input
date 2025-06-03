@@ -6,9 +6,11 @@ require('dotenv').config(); // Load .env variables
 const { OpenAI } = require('openai');
 
 if (!process.env.OPENAI_API_KEY) {
-    console.error("ERROR: OPENAI_API_KEY is not set in your .env file.");
+    console.error("FATAL ERROR: OPENAI_API_KEY is not set in your .env file.");
     app.quit();
     process.exit(1);
+} else {
+    console.log("OpenAI API Key found."); // Confirmation
 }
 
 const openai = new OpenAI({
@@ -33,7 +35,7 @@ function createWindow() {
 
     mainWindow.loadFile('index.html');
 
-    // mainWindow.webContents.openDevTools(); // Uncomment for debugging
+    mainWindow.webContents.openDevTools(); // Debugging enabled
 
     mainWindow.on('blur', () => {
         // Optional: close the window when it loses focus
@@ -66,7 +68,10 @@ app.on('window-all-closed', () => {
 
 // IPC Handler for LLM requests
 ipcMain.handle('send-to-llm', async (event, userText) => {
+    console.log("ipcMain: 'send-to-llm' received with text:", userText);
+
     if (!userText || userText.trim() === "") {
+        console.log("ipcMain: Empty userText received.");
         return { error: "Input text cannot be empty." };
     }
     try {
@@ -79,7 +84,16 @@ ipcMain.handle('send-to-llm', async (event, userText) => {
         console.log("LLM Response:", completion.choices[0].message.content);
         return { response: completion.choices[0].message.content };
     } catch (error) {
-        console.error("Error calling OpenAI API:", error.message);
+        console.error("ipcMain: Error calling OpenAI API:", error);
+        if (error instanceof OpenAI.APIError) {
+            console.error("OpenAI API Error Details:", {
+                status: error.status,
+                message: error.message,
+                code: error.code,
+                type: error.type,
+            });
+            return { error: `OpenAI API Error (${error.status}): ${error.message}` };
+        }
         return { error: `API Error: ${error.message}` };
     }
 });
