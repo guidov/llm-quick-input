@@ -1,0 +1,29 @@
+{
+  "name": "llm-quick-input",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dist": "electron-builder --linux"
+  },
+  "build": {
+  "appId": "com.me.llmquickinput",
+  "productName": "LLMQuickInput",
+  "linux": {
+    "target": ["AppImage", "deb"],
+    "category": "Utility"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "electron": "^36.3.2",
+    "openai": "^5.0.2"
+  },
+  "devDependencies": {
+    "electron-builder": "^26.0.12"
+  }
+}
