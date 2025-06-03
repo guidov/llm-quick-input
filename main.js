@@ -50,8 +50,54 @@ function createWindow() {
     });
 }
 
+const { Menu } = require('electron');
+
 app.whenReady().then(() => {
     createWindow();
+
+    // Create custom menu
+    const template = [
+        {
+            label: 'LLM Quick Input',
+            submenu: [
+                { 
+                    label: 'About LLM Quick Input',
+                    click: () => {
+                        require('electron').shell.openExternal('https://github.com/guidov/llm-quick-input')
+                    }
+                },
+                { type: 'separator' },
+                { 
+                    label: 'Quit', 
+                    accelerator: 'CmdOrCtrl+Q',
+                    click: () => app.quit() 
+                }
+            ]
+        },
+        {
+            label: 'Edit',
+            submenu: [
+                { role: 'undo' },
+                { role: 'redo' },
+                { type: 'separator' },
+                { role: 'cut' },
+                { role: 'copy' },
+                { role: 'paste' },
+                { role: 'selectAll' }
+            ]
+        },
+        {
+            label: 'View',
+            submenu: [
+                { role: 'toggleDevTools' },
+                { type: 'separator' },
+                { role: 'togglefullscreen' }
+            ]
+        }
+    ];
+
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
