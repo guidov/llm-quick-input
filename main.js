@@ -32,17 +32,11 @@ function createWindow() {
         // alwaysOnTop: true, // Optional: make it stay on top
         // skipTaskbar: true, // Optional: don't show in taskbar (if launched by shortcut)
     });
-
-    // Register custom protocol
-    protocol.registerFileProtocol('app', (request, callback) => {
-      const url = request.url.substr(6); // Remove 'app://'
-      callback({ path: path.join(__dirname, url) });
-    });
     
-    // Load via custom protocol
-    mainWindow.loadURL('app://index.html');
+    // Load the HTML file directly using file:// protocol
+    mainWindow.loadFile('index.html');
 
-    mainWindow.webContents.openDevTools(); // Debugging enabled
+    // mainWindow.webContents.openDevTools(); // Debugging enabled - commented out for production
 
     mainWindow.on('blur', () => {
         // Optional: close the window when it loses focus
@@ -75,8 +69,8 @@ app.on('window-all-closed', () => {
 
 // IPC Handler for LLM requests
 ipcMain.handle('send-to-llm', async (event, userText) => {
-    // Validate sender
-    if (event.senderFrame.url !== 'app://index.html') {
+    // Validate sender (file:// protocol for local files)
+    if (!event.senderFrame.url.startsWith('file://')) {
         console.warn('Blocked IPC request from untrusted source:', event.senderFrame.url);
         return { error: 'Unauthorized request' };
     }
