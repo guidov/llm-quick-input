@@ -5,25 +5,32 @@ const responseArea = document.getElementById('llm-response');
 const statusMessage = document.getElementById('status-message');
 const darkModeToggle = document.getElementById('dark-mode-toggle');
 
-// Check for saved theme preference or use preferred color scheme
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-let darkMode = localStorage.getItem('darkMode') === 'true' || 
-               (localStorage.getItem('darkMode') === null && prefersDark);
+// Theme management
+function setupTheme() {
+    // Check for saved theme preference or use preferred color scheme
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    let darkMode = localStorage.getItem('darkMode') === 'true' || 
+                  (localStorage.getItem('darkMode') === null && prefersDark);
 
-// Apply the theme
-function applyTheme() {
-  document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
-  localStorage.setItem('darkMode', darkMode);
+    // Apply the theme
+    function applyTheme() {
+        document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+        localStorage.setItem('darkMode', darkMode);
+        darkModeToggle.textContent = darkMode ? '🌞' : '🌙';
+    }
+
+    // Toggle theme
+    darkModeToggle.addEventListener('click', () => {
+        darkMode = !darkMode;
+        applyTheme();
+    });
+
+    // Initialize theme
+    applyTheme();
 }
 
-// Initialize theme
-applyTheme();
-
-// Toggle theme
-darkModeToggle.addEventListener('click', () => {
-  darkMode = !darkMode;
-  applyTheme();
-});
+// Initialize theme when DOM is loaded
+document.addEventListener('DOMContentLoaded', setupTheme);
 
 console.log("renderer.js loaded");
 console.log("window.electronAPI:", window.electronAPI); // Check if API is exposed
