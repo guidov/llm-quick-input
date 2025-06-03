@@ -8,11 +8,12 @@
     "dist": "electron-builder --linux"
   },
   "build": {
-  "appId": "com.me.llmquickinput",
-  "productName": "LLMQuickInput",
-  "linux": {
-    "target": ["AppImage", "deb"],
-    "category": "Utility"
+    "appId": "com.me.llmquickinput",
+    "productName": "LLMQuickInput",
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Utility"
+    }
   },
   "keywords": [],
   "author": "",
