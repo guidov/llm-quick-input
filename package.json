@@ -5,7 +5,8 @@
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dist": "electron-builder --linux"
+    "dist": "electron-builder --linux",
+    "postinstall": "electron-builder install-app-deps"
   },
   "build": {
     "appId": "com.me.llmquickinput",
@@ -26,6 +27,7 @@
   "homepage": "https://github.com/guidov/llm-quick-input",
   "description": "A lightweight Electron app for quick LLM queries",
   "dependencies": {
+    "axios": "^1.6.2",
     "dotenv": "^16.5.0",
     "openai": "^5.0.2"
   },
