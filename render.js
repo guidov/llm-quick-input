@@ -1,7 +1,7 @@
 // llm-quick-input/renderer.js
 const inputBox = document.getElementById('input-box');
 const sendButton = document.getElementById('send-button');
-const responseArea = document.getElementById('llm-response');
+const responseArea = document.getElementById('response-area-content');
 const statusMessage = document.getElementById('status-message');
 const darkModeToggle = document.getElementById('dark-mode-toggle');
 
