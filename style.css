@@ -64,6 +64,23 @@
   --status-info: #64B5F6;
   --status-error: #E57373;
   --status-success: #81C784;
+  --hover-bg: #404040;
+}
+
+/* Light mode theme */
+body[data-theme="light"] {
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --input-bg: #ffffff;
+  --input-text: #333333;
+  --button-bg: #007bff;
+  --button-text: #ffffff;
+  --response-bg: #f8f9fa;
+  --response-border: #dee2e6;
+  --status-info: #0066cc;
+  --status-error: #dc3545;
+  --status-success: #28a745;
+  --hover-bg: #e6e6e6;
 }
 
 body {
@@ -100,6 +117,11 @@ body {
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#send-button:hover {
+  opacity: 0.8;
 }
 
 #response-area {
@@ -109,6 +131,97 @@ body {
   border: 1px solid var(--response-border);
   border-radius: 4px;
   min-height: 100px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Markdown styling for response content */
+#response-area-content {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  line-height: 1.6;
+}
+
+#response-area-content h1,
+#response-area-content h2,
+#response-area-content h3,
+#response-area-content h4,
+#response-area-content h5,
+#response-area-content h6 {
+  color: var(--text-color);
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
+#response-area-content h1 { font-size: 1.5em; }
+#response-area-content h2 { font-size: 1.3em; }
+#response-area-content h3 { font-size: 1.1em; }
+
+#response-area-content p {
+  margin-bottom: 1em;
+  color: var(--text-color);
+}
+
+#response-area-content ul,
+#response-area-content ol {
+  margin-bottom: 1em;
+  padding-left: 2em;
+  color: var(--text-color);
+}
+
+#response-area-content li {
+  margin-bottom: 0.5em;
+}
+
+#response-area-content code {
+  background-color: var(--input-bg);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.9em;
+  color: var(--text-color);
+}
+
+#response-area-content pre {
+  background-color: var(--input-bg);
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin-bottom: 1em;
+  border: 1px solid var(--response-border);
+}
+
+#response-area-content pre code {
+  background: none;
+  padding: 0;
+}
+
+#response-area-content blockquote {
+  border-left: 4px solid var(--button-bg);
+  margin: 1em 0;
+  padding-left: 1em;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+#response-area-content strong {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+#response-area-content em {
+  font-style: italic;
+  color: var(--text-color);
+}
+
+/* KaTeX math styling */
+#response-area-content .katex {
+  font-size: 1em;
+}
+
+#response-area-content .katex-display {
+  margin: 1em 0;
+  text-align: center;
 }
 
 #status-message.info {
@@ -125,4 +238,27 @@ body {
 
 .error-response {
   color: var(--status-error);
+}
+
+/* Header section with settings and theme toggle */
+.header {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.settings-btn, .theme-toggle {
+    background: none;
+    border: 1px solid var(--response-border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-color);
+    transition: background-color 0.2s;
+}
+
+.settings-btn:hover, .theme-toggle:hover {
+    background-color: var(--hover-bg);
 }

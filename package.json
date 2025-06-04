@@ -12,7 +12,10 @@
     "appId": "com.me.llmquickinput",
     "productName": "LLMQuickInput",
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": [
+        "AppImage",
+        "deb"
+      ],
       "category": "Utility",
       "maintainer": "Guido Vettoretti <2guido@gmail.com>"
     }
@@ -29,6 +32,8 @@
   "dependencies": {
     "axios": "^1.6.2",
     "dotenv": "^16.5.0",
+    "katex": "^0.16.22",
+    "marked": "^15.0.12",
     "openai": "^5.0.2"
   },
   "devDependencies": {

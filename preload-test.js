@@ -1,14 +1,9 @@
-// llm-quick-input/preload.js
 const { contextBridge, ipcRenderer } = require('electron');
 
-console.log('Preload script is loading...');
+console.log('Simple preload test is loading...');
 
 contextBridge.exposeInMainWorld('electronAPI', {
     sendToLLM: (userText) => {
-        // Validate input before sending
-        if (typeof userText !== 'string' || userText.length > 1000) {
-            throw new Error('Invalid input');
-        }
         return ipcRenderer.invoke('send-to-llm', userText);
     },
     closeApp: () => ipcRenderer.send('close-app'),
@@ -16,11 +11,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     saveSettings: (settings) => ipcRenderer.invoke('save-settings', settings),
     openSettings: () => ipcRenderer.send('open-settings'),
     fetchOllamaModels: (ollamaUrl) => ipcRenderer.invoke('fetch-ollama-models', ollamaUrl),
-    // Expose rendering function via IPC
-    renderMarkdown: (text) => {
-        return ipcRenderer.invoke('render-markdown', text);
-    }
+    renderMarkdown: (text) => text // Simple fallback
 });
 
-console.log('electronAPI exposed successfully');
-
+console.log('Simple electronAPI exposed successfully');

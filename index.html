@@ -3,13 +3,17 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:;">
     <title>LLM Quick Input</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="node_modules/katex/dist/katex.min.css">
 </head>
 <body>
     <div class="container">
-        <button id="dark-mode-toggle" title="Toggle Dark Mode" class="theme-toggle">🌓</button>
+        <div class="header">
+            <button id="settings-button" title="Settings" class="settings-btn">⚙️</button>
+            <button id="dark-mode-toggle" title="Toggle Dark Mode" class="theme-toggle">🌓</button>
+        </div>
         <textarea id="input-box" placeholder="Talk to LLM... (Ctrl+Enter to send, Esc to close)" autofocus></textarea>
         <button id="send-button">Send</button>
         <div id="response-area">
